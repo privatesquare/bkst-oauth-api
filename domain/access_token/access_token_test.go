@@ -1,6 +1,6 @@
 package access_token
 
-import    (
+import (
 	"github.com/privatesquare/bkst-go-utils/utils/dateutils"
 	"testing"
 	"time"

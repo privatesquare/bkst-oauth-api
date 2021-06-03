@@ -3,12 +3,12 @@ package services
 import (
 	"github.com/privatesquare/bkst-go-utils/utils/errors"
 	"github.com/privatesquare/bkst-oauth-api/domain/access_token"
-	"github.com/privatesquare/bkst-oauth-api/repository/db"
+	"github.com/privatesquare/bkst-oauth-api/interfaces/db/cassandra"
 )
 
-func New(r db.Repository) AccessTokenService {
+func NewAccessTokenService(r cassandra.AccessTokenStore) AccessTokenService {
 	return &accessTokenService{
-		Repository: r,
+		AccessTokenStore: r,
 	}
 }
 
@@ -17,9 +17,9 @@ type AccessTokenService interface {
 }
 
 type accessTokenService struct {
-	Repository db.Repository
+	AccessTokenStore cassandra.AccessTokenStore
 }
 
 func (ats *accessTokenService) GetById(id string) (*access_token.AccessToken, *errors.RestErr) {
-	return ats.Repository.GetById(id)
+	return ats.AccessTokenStore.GetById(id)
 }

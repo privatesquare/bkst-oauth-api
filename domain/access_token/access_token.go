@@ -10,11 +10,11 @@ const (
 )
 
 type AccessToken struct {
-	ClientId string `json:"client_id"`
-	ClientSecret string `json:"client_secret"`
-	AccessToken string `json:"access_token"`
-	UserId int64 `json:"user_id"`
-	Expires time.Time `json:"expires"`
+	ClientId     string    `json:"client_id"`
+	ClientSecret string    `json:"client_secret"`
+	AccessToken  string    `json:"access_token"`
+	UserId       int64     `json:"user_id"`
+	Expires      time.Time `json:"expires"`
 }
 
 func (at *AccessToken) New() error {

@@ -1,0 +1,12 @@
+version: "3.9"
+
+services:
+  oauth:
+    image: cassandra:4.0
+    #    volumes:
+    #      - db_data:/var/lib/cassandra
+    restart: always
+    ports:
+      - "9042:9042"
+    environment:
+      CASSANDRA_CLUSTER_NAME: oauth

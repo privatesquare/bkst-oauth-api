@@ -5,6 +5,10 @@
 # OS
 **.DS_Store
 
+# Configuration
+config.env
+config.yaml
+
 # Executables
 bkst-oauth-api
 docker-context/bkst-oauth-api*

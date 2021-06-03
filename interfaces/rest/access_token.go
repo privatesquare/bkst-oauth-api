@@ -1,8 +1,7 @@
-package controllers
+package rest
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/privatesquare/bkst-go-utils/utils/httputils"
 	"github.com/privatesquare/bkst-oauth-api/services"
 	"net/http"
 	"strings"
@@ -23,7 +22,7 @@ type accessTokenHandler struct {
 func (ath *accessTokenHandler) GetById(ctx *gin.Context) {
 	at, restErr := ath.Service.GetById(strings.TrimSpace(ctx.Param("id")))
 	if restErr != nil {
-		ctx.JSON(restErr.Status, httputils.RestMsg{Message: restErr.Message})
+		ctx.JSON(restErr.Status, restErr)
 		return
 	}
 	ctx.JSON(http.StatusOK, at)
