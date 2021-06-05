@@ -20,8 +20,8 @@ const (
 	apiServerStartedMsg     = "The API server has started and is listening on %s"
 	apiServerStartupErrMsg  = "Unable to run the web server"
 
-	apiHealthPath = "/health"
-	apiAccessTokenPath = "/oauth/access_token"
+	apiHealthPath            = "/health"
+	apiAccessTokenPath       = "/oauth/access_token"
 	apiAccessTokenIdParamExt = "/:id"
 )
 
@@ -63,8 +63,8 @@ func setupRoutes(r *gin.Engine) *gin.Engine {
 	r.GET(apiHealthPath, httputils.Health)
 
 	ath := rest.NewAccessTokenHandler(services.NewAccessTokenService(cassandra.NewAccessTokenStore()))
-	r.GET(apiAccessTokenPath + apiAccessTokenIdParamExt, ath.GetById)
+	r.GET(apiAccessTokenPath+apiAccessTokenIdParamExt, ath.GetById)
 	r.POST(apiAccessTokenPath, ath.Create)
-	r.PUT(apiAccessTokenPath + apiAccessTokenIdParamExt, ath.Update)
+	r.PUT(apiAccessTokenPath+apiAccessTokenIdParamExt, ath.Update)
 	return r
 }

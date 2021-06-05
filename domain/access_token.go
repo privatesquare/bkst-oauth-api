@@ -13,10 +13,10 @@ const (
 )
 
 type AccessToken struct {
-	AccessToken  string    `json:"access_token"`
-	ClientId     int64    `json:"client_id"`
-	UserId       int64     `json:"user_id"`
-	Expires      time.Time `json:"expires"`
+	AccessToken string    `json:"access_token"`
+	ClientId    int64     `json:"client_id"`
+	UserId      int64     `json:"user_id"`
+	Expires     time.Time `json:"expires"`
 }
 
 func (at *AccessToken) SetExpiration() {
@@ -32,13 +32,13 @@ func (at *AccessToken) validateFields() *errors.RestErr {
 
 	at.AccessToken = strings.TrimSpace(at.AccessToken)
 	if at.AccessToken == "" {
-		missingParams  = append(missingParams, structutils.GetFieldTagValue(at, &at.AccessToken))
+		missingParams = append(missingParams, structutils.GetFieldTagValue(at, &at.AccessToken))
 	}
 	if at.ClientId <= 0 {
-		missingParams  = append(missingParams, structutils.GetFieldTagValue(at, &at.ClientId))
+		missingParams = append(missingParams, structutils.GetFieldTagValue(at, &at.ClientId))
 	}
 	if at.UserId <= 0 {
-		missingParams  = append(missingParams, structutils.GetFieldTagValue(at, &at.UserId))
+		missingParams = append(missingParams, structutils.GetFieldTagValue(at, &at.UserId))
 	}
 	if at.Expires.IsZero() {
 		missingParams = append(missingParams, structutils.GetFieldTagValue(at, &at.Expires))

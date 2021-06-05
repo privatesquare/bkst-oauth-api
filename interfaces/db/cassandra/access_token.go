@@ -9,13 +9,13 @@ import (
 )
 
 const (
-	queryGetAccessToken = "SELECT access_token, user_id, client_id, expires FROM access_tokens WHERE access_token=?"
+	queryGetAccessToken    = "SELECT access_token, user_id, client_id, expires FROM access_tokens WHERE access_token=?"
 	queryCreateAccessToken = "INSERT INTO access_tokens(access_token, user_id, client_id, expires) VALUES(?,?,?,?);"
 	queryUpdateAccessToken = "UPDATE access_tokens SET expires=? WHERE access_tokens=?;"
 
 	accessTokenNotFoundMsg = "Access token with id %s was not found"
-	dbCreateSessionErrMsg = "Unable to create db session"
-	dbQueryErrMsg = "Unable to execute database query"
+	dbCreateSessionErrMsg  = "Unable to create db session"
+	dbQueryErrMsg          = "Unable to execute database query"
 )
 
 func NewAccessTokenStore() AccessTokenStore {
