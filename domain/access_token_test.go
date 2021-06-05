@@ -1,4 +1,4 @@
-package access_token
+package domain
 
 import (
 	"github.com/privatesquare/bkst-go-utils/utils/dateutils"
@@ -8,10 +8,7 @@ import (
 
 func TestAccessToken_New(t *testing.T) {
 	at := new(AccessToken)
-	err := at.New()
-	if err != nil {
-		t.Error(err)
-	}
+	at.SetExpiration()
 	if at.IsExpired() {
 		t.Error("New access token should not be expired")
 	}

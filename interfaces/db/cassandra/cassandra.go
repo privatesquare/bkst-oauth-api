@@ -2,6 +2,8 @@ package cassandra
 
 import (
 	"github.com/gocql/gocql"
+	"io/ioutil"
+	"log"
 )
 
 var (
@@ -21,6 +23,7 @@ func NewCluster(cfg Cfg) error {
 	cluster = gocql.NewCluster(cfg.DBHost)
 	cluster.Keyspace = cfg.DBKeySpace
 	cluster.Consistency = gocql.Quorum
+	cluster.Logger = log.New(ioutil.Discard, "", 0)
 	return nil
 }
 

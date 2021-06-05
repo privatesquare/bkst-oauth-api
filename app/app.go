@@ -21,6 +21,8 @@ const (
 	apiServerStartupErrMsg  = "Unable to run the web server"
 
 	apiHealthPath = "/health"
+	apiAccessTokenPath = "/oauth/access_token"
+	apiAccessTokenIdParamExt = "/:id"
 )
 
 func StartApp() {
@@ -59,6 +61,10 @@ func dbConnect() {
 
 func setupRoutes(r *gin.Engine) *gin.Engine {
 	r.GET(apiHealthPath, httputils.Health)
-	r.GET("/oauth/access_token/:id", rest.NewAccessTokenHandler(services.NewAccessTokenService(cassandra.NewAccessTokenStore())).GetById)
+
+	ath := rest.NewAccessTokenHandler(services.NewAccessTokenService(cassandra.NewAccessTokenStore()))
+	r.GET(apiAccessTokenPath + apiAccessTokenIdParamExt, ath.GetById)
+	r.POST(apiAccessTokenPath, ath.Create)
+	r.PUT(apiAccessTokenPath + apiAccessTokenIdParamExt, ath.Update)
 	return r
 }
