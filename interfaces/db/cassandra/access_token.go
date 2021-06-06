@@ -31,13 +31,6 @@ type AccessTokenStore interface {
 type accessTokenStore struct{}
 
 func (ats *accessTokenStore) GetById(id string) (*domain.AccessToken, *errors.RestErr) {
-	session, err := NewSession()
-	if err != nil {
-		logger.Error(dbCreateSessionErrMsg, err)
-		return nil, errors.InternalServerError()
-	}
-	defer session.Close()
-
 	at := new(domain.AccessToken)
 	if err := session.Query(queryGetAccessToken, id).Scan(&at.AccessToken,
 		&at.UserId, &at.ClientId, &at.Expires); err != nil {
@@ -53,13 +46,6 @@ func (ats *accessTokenStore) GetById(id string) (*domain.AccessToken, *errors.Re
 }
 
 func (ats *accessTokenStore) Create(at domain.AccessToken) *errors.RestErr {
-	session, err := NewSession()
-	if err != nil {
-		logger.Error(dbCreateSessionErrMsg, err)
-		return errors.InternalServerError()
-	}
-	defer session.Close()
-
 	if err := session.Query(queryCreateAccessToken, &at.AccessToken, &at.UserId,
 		&at.ClientId, &at.Expires).Exec(); err != nil {
 		logger.Error(dbQueryErrMsg, err)
@@ -69,13 +55,6 @@ func (ats *accessTokenStore) Create(at domain.AccessToken) *errors.RestErr {
 }
 
 func (ats *accessTokenStore) Update(at domain.AccessToken) *errors.RestErr {
-	session, err := NewSession()
-	if err != nil {
-		logger.Error(dbCreateSessionErrMsg, err)
-		return errors.InternalServerError()
-	}
-	defer session.Close()
-
 	if err := session.Query(queryUpdateAccessToken, &at.Expires, &at.AccessToken).Exec(); err != nil {
 		logger.Error(dbQueryErrMsg, err)
 		return errors.InternalServerError()

@@ -1,1 +1,0 @@
-CREATE TABLE access_tokens(access_token VARCHAR PRIMARY KEY,user_id BIGINT,client_id BIGINT,expires DATE);

@@ -8,6 +8,7 @@ import (
 
 var (
 	cluster *gocql.ClusterConfig
+	session *gocql.Session
 )
 
 type Cfg struct {
@@ -27,10 +28,16 @@ func NewCluster(cfg Cfg) error {
 	return nil
 }
 
-func NewSession() (*gocql.Session, error) {
-	session, err := cluster.CreateSession()
+func OpenSession() error {
+	var err error
+	session, err = cluster.CreateSession()
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return session, nil
+	return nil
 }
+
+func CloseSession() {
+	session.Close()
+}
+

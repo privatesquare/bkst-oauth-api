@@ -29,6 +29,7 @@ func StartApp() {
 	r := httputils.NewRouter()
 	setupRoutes(r)
 	dbConnect()
+	defer cassandra.CloseSession()
 
 	logger.Info(apiServerStartingMsg)
 	logger.Info(fmt.Sprintf(apiServerStartedMsg, defaultWebServerPort))
@@ -51,12 +52,11 @@ func dbConnect() {
 		os.Exit(1)
 	}
 
-	session, err := cassandra.NewSession()
+	err := cassandra.OpenSession()
 	if err != nil {
 		logger.Error(err.Error(), err)
 		os.Exit(1)
 	}
-	session.Close()
 }
 
 func setupRoutes(r *gin.Engine) *gin.Engine {
