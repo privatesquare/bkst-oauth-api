@@ -40,4 +40,3 @@ func OpenSession() error {
 func CloseSession() {
 	session.Close()
 }
-

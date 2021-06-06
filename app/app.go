@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	defaultWebServerPort    = "8080"
+	defaultWebServerPort    = "8081"
 	dbClusterCreationErrMsg = "Unable to create db cluster"
 	usingExternalDbMsg      = "Using external %s database listening on %s:%s"
 	apiServerStartingMsg    = "Starting the API server..."
@@ -33,7 +33,7 @@ func StartApp() {
 
 	logger.Info(apiServerStartingMsg)
 	logger.Info(fmt.Sprintf(apiServerStartedMsg, defaultWebServerPort))
-	if err := r.Run(":8080"); err != nil {
+	if err := r.Run(":" + defaultWebServerPort); err != nil {
 		logger.Error(apiServerStartupErrMsg, err)
 		os.Exit(1)
 	}
