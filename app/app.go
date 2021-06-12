@@ -3,10 +3,12 @@ package app
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/go-resty/resty/v2"
 	"github.com/privatesquare/bkst-go-utils/utils/config"
 	"github.com/privatesquare/bkst-go-utils/utils/httputils"
 	"github.com/privatesquare/bkst-go-utils/utils/logger"
 	"github.com/privatesquare/bkst-oauth-api/interfaces/db/cassandra"
+	users_api "github.com/privatesquare/bkst-oauth-api/interfaces/http/users_api"
 	"github.com/privatesquare/bkst-oauth-api/interfaces/rest"
 	"github.com/privatesquare/bkst-oauth-api/services"
 	"os"
@@ -23,6 +25,7 @@ const (
 	apiHealthPath            = "/health"
 	apiAccessTokenPath       = "/oauth/access_token"
 	apiAccessTokenIdParamExt = "/:id"
+	apiLoginPath             = "/login"
 )
 
 func StartApp() {
@@ -30,6 +33,7 @@ func StartApp() {
 	setupRoutes(r)
 	dbConnect()
 	defer cassandra.CloseSession()
+	loadConfig()
 
 	logger.Info(apiServerStartingMsg)
 	logger.Info(fmt.Sprintf(apiServerStartedMsg, defaultWebServerPort))
@@ -59,6 +63,15 @@ func dbConnect() {
 	}
 }
 
+func loadConfig() {
+	usersApiCfg := new(users_api.UsersApiCfg)
+	if err := config.Load(usersApiCfg); err != nil {
+		logger.Error(err.Error(), err)
+		os.Exit(1)
+	}
+	usersApiCfg.SetConfig()
+}
+
 func setupRoutes(r *gin.Engine) *gin.Engine {
 	r.GET(apiHealthPath, httputils.Health)
 
@@ -66,5 +79,9 @@ func setupRoutes(r *gin.Engine) *gin.Engine {
 	r.GET(apiAccessTokenPath+apiAccessTokenIdParamExt, ath.GetById)
 	r.POST(apiAccessTokenPath, ath.Create)
 	r.PUT(apiAccessTokenPath+apiAccessTokenIdParamExt, ath.Update)
+
+	uh := rest.NewUsersHandler(services.NewUsersService(users_api.NewUsersStore(resty.New())))
+	r.POST(apiLoginPath, uh.Login)
+
 	return r
 }
